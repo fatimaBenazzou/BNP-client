@@ -1,9 +1,20 @@
-import { createStore } from 'redux';
-import reducer from './reducer';
+
 
 // ==============================|| REDUX - MAIN STORE ||============================== //
 
-const store = createStore(reducer);
-const persister = 'Free';
+import { configureStore } from "@reduxjs/toolkit";
+import Api from "./api";
+import user from "./slices/user";
+import customizationReducer from './customizationReducer';
+import notification from "./slices/notification";
+export const store = configureStore({
+    reducer: {
+        [Api.reducerPath]: Api.reducer,
+        user,
+        customization: customizationReducer,
+        notification,
+    },
+    middleware: (defaultMiddleware) =>
+        defaultMiddleware().concat(Api.middleware),
+});
 
-export { store, persister };
